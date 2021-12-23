@@ -1,0 +1,225 @@
+WSB Ticker Frequency of Top 100 posts: 12:02:26
+Term  Frequency
+HUBS          8
+TSLA          7
+NVAX          6
+   G          5
+  UK          5
+ GME          4
+  DD          4
+ AMC          3
+  BB          3
+   F          3
+  IS          2
+  SP          2
+NVDA          2
+ RSI          2
+   E          2
+   D          2
+   M          2
+ CLF          2
+  TA          2
+  YY          2
+ AMD          2
+   Y          2
+RBLX          1
+MRNA          1
+  MU          1
+ PEP          1
+PLTR          1
+  SO          1
+  ME          1
+RKLB          1
+   V          1
+   U          1
+SAVA          1
+   T          1
+   W          1
+AAPL          1
+   L          1
+   K          1
+  AM          1
+ ANY          1
+ ATH          1
+ATVI          1
+BABA          1
+ BMO          1
+   C          1
+CBOE          1
+ CPA          1
+ CRM          1
+CROX          1
+ FOR          1
+FREE          1
+ GDP          1
+  IP          1
+ IRS          1
+ ACB          1
+  IT          1
+ JAN          1
+ ZIM          1
+
+WSB Ticker Frequency of Top 500 posts: 12:03:32
+Term  Frequency
+TSLA         26
+   M         22
+ GME         19
+ABCL         17
+  DD         14
+UBER         12
+   K         10
+  SP         10
+ RSI         10
+ NIO         10
+NVAX         10
+  UK          9
+  TV          9
+ AMC          9
+   C          9
+SBLK          8
+  BB          8
+HUBS          8
+NVDA          8
+CRSR          7
+  TA          7
+VIAC          6
+ PFE          6
+   F          6
+  IS          5
+ GDP          5
+   G          5
+ OPK          5
+ JWN          4
+   D          4
+ FDX          4
+ ZIM          4
+PLTR          4
+ ATH          4
+VCRA          4
+AMEH          4
+ TAK          4
+ TMX          4
+AUPH          4
+EVTL          4
+AAPL          3
+   T          3
+  PT          3
+SAVA          3
+   V          3
+GAIN          3
+WISH          3
+   Y          3
+ FCF          3
+RIVN          3
+ AAL          3
+ CCL          3
+ADBE          3
+BROS          3
+BABA          3
+DKNG          3
+APPS          2
+ IRS          2
+  IT          2
+ TTM          2
+ AMD          2
+ CLF          2
+EBAY          2
+LOGI          2
+ ADS          2
+MRNA          2
+  MU          2
+  BC          2
+ OKE          2
+  PL          2
+  AI          2
+  JP          2
+   R          2
+ EOD          2
+HSBC          2
+ GSK          2
+   X          2
+  GM          2
+ DIS          2
+  YY          2
+  FB          2
+   E          2
+ DTE          2
+   S          1
+  SO          1
+  SI          1
+ATVI          1
+ROKU          1
+ YOU          1
+ RKT          1
+RKLB          1
+ BCE          1
+ RCM          1
+ RCL          1
+RBLX          1
+ SOL          1
+  VC          1
+ARQQ          1
+BLND          1
+ADGI          1
+ UBS          1
+ ALL          1
+ UAL          1
+   U          1
+  AM          1
+   W          1
+  WE          1
+ ACB          1
+ ACN          1
+AMRS          1
+TLRY          1
+  TD          1
+AMZN          1
+ ANY          1
+  WW          1
+  SQ          1
+OCGN          1
+BMBL          1
+ BMO          1
+ JNJ          1
+ JAN          1
+ CPA          1
+ CRM          1
+IRNT          1
+  IP          1
+IONQ          1
+INTC          1
+CROX          1
+ GWH          1
+ CTO          1
+ GET          1
+GENI          1
+  CW          1
+ DAL          1
+ DCF          1
+FREE          1
+ FOR          1
+  ET          1
+COIN          1
+ KEY          1
+  KW          1
+ CCI          1
+ PEP          1
+ OUT          1
+OTLY          1
+BOOM          1
+  OI          1
+EDIT          1
+CBOE          1
+ NOK          1
+ NGL          1
+   L          1
+NFLX          1
+MSCI          1
+MRVL          1
+ MIT          1
+  ME          1
+LMND          1
+ LFG          1
+LAZR          1
+   J          1
+
