@@ -1,14 +1,16 @@
-import csv
-import pandas as pd
-import praw
-import re
-
-# Step 1: Print a list of tickers
 # Data Source 1:  ftp.nasdaqtrader.com/SymbolDirectory
 # Data Source 2:  ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt
 # Data Source 3:  ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt
 
+import csv
+import pandas as pd
+import praw
+import re
+from datetime import datetime
 
+WSB_POSTS_SCRAPED = 100
+
+# Step 1: Print a list of tickers
 # Save tickers and company names ['ticker', 'name']
 ticker_list = []
 with open('tickers.csv', newline='') as csvfile:
@@ -22,7 +24,6 @@ with open('tickers.csv', newline='') as csvfile:
     # print(obj[0] + ": " + obj[1])  # Print company + ticker name
 
 # Step 2: Create frequency list of tickers
-
 # Read data from reddit API
 reddit = praw.Reddit(
   client_id = "qBibtPUZ69Gi1IUUGhQ87w",
@@ -32,8 +33,9 @@ reddit = praw.Reddit(
 
 
 # Grab all WSB posts
+# (from https://medium.com/@tom.santinelli/scraping-reddits-wall-street-bets-for-popular-stock-tickers-38ed5202affc)
 df = []
-for post in reddit.subreddit('wallstreetbets').hot(limit=100):
+for post in reddit.subreddit('wallstreetbets').hot(limit=WSB_POSTS_SCRAPED):
   content = {
     "title" : post.title,
     "text" : post.selftext
@@ -43,6 +45,7 @@ df = pd.DataFrame(df)
 
 
 # Analyze word frequency
+# (from https://medium.com/@tom.santinelli/scraping-reddits-wall-street-bets-for-popular-stock-tickers-38ed5202affc)
 regex = re.compile('[^a-zA-Z ]')
 word_dict = {}
 for (index, row) in df.iterrows():
@@ -65,14 +68,20 @@ for (index, row) in df.iterrows():
         else:
             word_dict[x] = 1
 word_df = pd.DataFrame.from_dict(list(word_dict.items())).rename(columns={0: "Term", 1: "Frequency"})
-
 ticker_df = pd.DataFrame(ticker_list).rename(columns={0: "Term", 1: "Name"})
 
-stonks_df = pd.merge(ticker_df["Term"], word_df, on="Term")
 
-# Step 3: Print data
+# Step 3: Print data to output.txt with timestamp
 
 # List of tickers (sorted by frequency)
+stonks_df = pd.merge(ticker_df["Term"], word_df, on="Term")
 final_df = stonks_df.sort_values(by=['Frequency'], ascending=False)
-print(final_df.to_string())
+new_line = final_df.to_string(index=False)
 
+now = datetime.now()
+current_time = now.strftime("%H:%M:%S")
+
+with open("output.txt", "a") as a_file:
+  a_file.write(f"WSB Ticker Frequency of Top {WSB_POSTS_SCRAPED} posts: {current_time}\n")
+  a_file.write(new_line)
+  a_file.write("\n\n")
