@@ -12,34 +12,38 @@ from datetime import datetime
 # Save tickers and company names ['ticker', 'name']
 ticker_list = []
 with open('tickers.csv', newline='') as csvfile:
-     spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-     for row in spamreader:
-         ticker_list.append(row[0].split(","))
+    spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+    for row in spamreader:
+        ticker_list.append(row[0].split(","))
 
-#for obj in ticker_list:
-    # print(obj[0])  # Print ticker name
-    # print(obj[1])  # Print company name
-    # print(obj[0] + ": " + obj[1])  # Print company + ticker name
+# for obj in ticker_list:
+# print(obj[0])  # Print ticker name
+# print(obj[1])  # Print company name
+# print(obj[0] + ": " + obj[1])  # Print company + ticker name
 
 # Step 2: Create frequency list of tickers
 # Read data from reddit API
 reddit = praw.Reddit(
-  client_id = "qBibtPUZ69Gi1IUUGhQ87w",
-  client_secret = "8mzMqF5BRRa1kEWR9FqpJzhN1-WvBA",
-  user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
+    client_id="qBibtPUZ69Gi1IUUGhQ87w",
+    client_secret="8mzMqF5BRRa1kEWR9FqpJzhN1-WvBA",
+    user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
 )
 
-
 # Grab hot or new posts based on user input
-settings_input = input("Commands:\nView hot posts: h\nView new posts: n\nReset output.txt: r\n\n")
+settings_input = input(
+    "Commands:\nView hot posts: h\nView new posts: n\nView posts from last 24 hours: 24\nReset output.txt: r\n\n")
 
 if settings_input == "r":
     file = open('output.txt', 'w')
     file.truncate(0)
     print("Reset successful. Enter a new command:")
-    settings_input = input("View hot posts: h\nView new posts: n\n\n")
+    settings_input = input("View hot posts: h\nView new posts: n\nView posts from last 24 hours: 24\n\n")
 
-WSB_POSTS_SCRAPED = int(input("How many posts should be scraped? (100 is the default): "))
+WSB_POSTS_SCRAPED = 100
+
+if(settings_input != "24"):
+    WSB_POSTS_SCRAPED = int(input("How many posts should be scraped? (100 is the default): "))
+
 WSB_NEW_OR_HOT = ""
 
 # Grab all hot WSB posts
@@ -60,8 +64,25 @@ if settings_input == "n":
             "text": post.selftext
         }
         df.append(content)
-df = pd.DataFrame(df)
+if settings_input == "24":
+    WSB_NEW_OR_HOT = "24h"
+    for post in reddit.subreddit('wallstreetbets').new(limit=WSB_POSTS_SCRAPED):
+        utcPostTime = post.created
+        submissionDate = datetime.utcfromtimestamp(utcPostTime)
 
+        currentTime = datetime.utcnow()
+        submissionDelta = currentTime - submissionDate
+        # print(submissionDelta)  # See age of new posts
+
+        if submissionDelta.days < 2:
+            content = {
+                "title": post.title,
+                "text": post.selftext
+            }
+            df.append(content)
+        else:
+            df.append({"title": "", "text": ""})
+df = pd.DataFrame(df)
 
 # Analyze word frequency
 # (from https://medium.com/@tom.santinelli/scraping-reddits-wall-street-bets-for-popular-stock-tickers-38ed5202affc)
@@ -89,7 +110,6 @@ for (index, row) in df.iterrows():
 word_df = pd.DataFrame.from_dict(list(word_dict.items())).rename(columns={0: "Term", 1: "Frequency"})
 ticker_df = pd.DataFrame(ticker_list).rename(columns={0: "Term", 1: "Name"})
 
-
 # Step 3: Print data to output.txt with timestamp
 
 # List of tickers (sorted by frequency)
@@ -100,7 +120,11 @@ new_line = final_df.to_string(index=False)
 now = datetime.now()
 current_time = now.strftime("%H:%M:%S")
 
+# Print to output.txt
 with open("output.txt", "a") as a_file:
-  a_file.write(f"WSB Ticker Frequency of Top {WSB_POSTS_SCRAPED} {WSB_NEW_OR_HOT} posts: {current_time}\n")
-  a_file.write(new_line)
-  a_file.write("\n\n")
+    if WSB_NEW_OR_HOT == "24h":
+        a_file.write(f"WSB Ticker Frequency from the last 24 hours: {current_time}\n")
+    else:
+        a_file.write(f"WSB Ticker Frequency of Top {WSB_POSTS_SCRAPED} {WSB_NEW_OR_HOT} posts: {current_time}\n")
+    a_file.write(new_line)
+    a_file.write("\n\n")
