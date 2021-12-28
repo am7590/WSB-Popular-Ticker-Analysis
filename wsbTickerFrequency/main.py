@@ -8,8 +8,6 @@ import praw
 import re
 from datetime import datetime
 
-WSB_POSTS_SCRAPED = 100
-
 # Step 1: Print a list of tickers
 # Save tickers and company names ['ticker', 'name']
 ticker_list = []
@@ -32,15 +30,36 @@ reddit = praw.Reddit(
 )
 
 
-# Grab all WSB posts
-# (from https://medium.com/@tom.santinelli/scraping-reddits-wall-street-bets-for-popular-stock-tickers-38ed5202affc)
+# Grab hot or new posts based on user input
+settings_input = input("Commands:\nView hot posts: h\nView new posts: n\nReset output.txt: r\n\n")
+
+if settings_input == "r":
+    file = open('output.txt', 'w')
+    file.truncate(0)
+    print("Reset successful. Enter a new command:")
+    settings_input = input("View hot posts: h\nView new posts: n\n\n")
+
+WSB_POSTS_SCRAPED = int(input("How many posts should be scraped? (100 is the default): "))
+WSB_NEW_OR_HOT = ""
+
+# Grab all hot WSB posts
 df = []
-for post in reddit.subreddit('wallstreetbets').hot(limit=WSB_POSTS_SCRAPED):
-  content = {
-    "title" : post.title,
-    "text" : post.selftext
-  }
-  df.append(content)
+if settings_input == "h":
+    WSB_NEW_OR_HOT = "hottest"
+    for post in reddit.subreddit('wallstreetbets').hot(limit=WSB_POSTS_SCRAPED):
+        content = {
+            "title": post.title,
+            "text": post.selftext
+        }
+        df.append(content)
+if settings_input == "n":
+    WSB_NEW_OR_HOT = "newest"
+    for post in reddit.subreddit('wallstreetbets').new(limit=WSB_POSTS_SCRAPED):
+        content = {
+            "title": post.title,
+            "text": post.selftext
+        }
+        df.append(content)
 df = pd.DataFrame(df)
 
 
@@ -82,6 +101,6 @@ now = datetime.now()
 current_time = now.strftime("%H:%M:%S")
 
 with open("output.txt", "a") as a_file:
-  a_file.write(f"WSB Ticker Frequency of Top {WSB_POSTS_SCRAPED} posts: {current_time}\n")
+  a_file.write(f"WSB Ticker Frequency of Top {WSB_POSTS_SCRAPED} {WSB_NEW_OR_HOT} posts: {current_time}\n")
   a_file.write(new_line)
   a_file.write("\n\n")
