@@ -59,16 +59,3 @@ def analyze_word_frequency(df):
     return [word_df, ticker_df]
 
 
-# List of tickers (sorted by frequency)
-def list_tickers(ticker_df, word_df, posts_scraped):
-    stonks_df = pd.merge(ticker_df["Term"], word_df, on="Term")
-    final_df = stonks_df.sort_values(by=['Frequency'], ascending=False)
-    new_line = final_df.to_string(index=False)
-
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-
-    with open("output.txt", "a") as a_file:
-        a_file.write(f"WSB Ticker Frequency from posts made in the last 24 hours: {current_time}\n")
-        a_file.write(new_line)
-        a_file.write("\n\n")

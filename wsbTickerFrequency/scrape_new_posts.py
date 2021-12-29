@@ -1,11 +1,10 @@
-import utilities
 from utilities import *
 
 
 # Grab all WSB posts
 def get_wsb_posts(posts_scraped, subreddit):
     df = []
-    for post in utilities.reddit.subreddit(subreddit).hot(limit=posts_scraped):
+    for post in reddit.subreddit(subreddit).new(limit=posts_scraped):
         content = {
             "title": post.title,
             "text": post.selftext
@@ -26,12 +25,12 @@ def list_tickers(ticker_df, word_df, posts_scraped):
     current_time = now.strftime("%H:%M:%S")
 
     with open("output.txt", "a") as a_file:
-        a_file.write(f"WSB Ticker Frequency from the hottest {posts_scraped} posts: {current_time}\n")
+        a_file.write(f"WSB Ticker Frequency from the newest {posts_scraped} posts: {current_time}\n")
         a_file.write(new_line)
         a_file.write("\n\n")
 
 
-def scrape_hot_posts(posts_scraped, subreddit):
+def scrape_new_posts(posts_scraped, subreddit):
     df = get_wsb_posts(posts_scraped, subreddit)
     [word_df, ticker_df] = analyze_word_frequency(df)
     list_tickers(ticker_df, word_df, posts_scraped)
